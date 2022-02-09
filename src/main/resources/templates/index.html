@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,12 +24,23 @@
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
 
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">通知</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" th:if="${session.user == null}">
                     <a class="nav-link" href="https://github.com/login/oauth/authorize?client_id=b255ff7c80bc017b117f&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登录</a>
+                </li>
+
+                <li class="nav-item dropdown" th:if="${session.user != null}">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${session.user.getName()}">
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">消息中心</a></li>
+                        <li><a class="dropdown-item" href="#">个人资料</a></li>
+                        <li><a class="dropdown-item" href="#">退出登录</a></li>
+                    </ul>
                 </li>
 
 
