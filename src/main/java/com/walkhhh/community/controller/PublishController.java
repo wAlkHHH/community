@@ -1,13 +1,16 @@
 package com.walkhhh.community.controller;
 
-import com.walkhhh.community.dto.Question;
-import com.walkhhh.community.dto.User;
+import com.walkhhh.community.model.Question;
+import com.walkhhh.community.model.User;
 import com.walkhhh.community.mapper.QuestionMapper;
+import com.walkhhh.community.service.QuestionService;
+import lombok.EqualsAndHashCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,6 +28,21 @@ public class PublishController {
     @Autowired
     QuestionMapper questionMapper;
 
+
+    @Autowired
+    QuestionService questionService;
+
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable(name = "id") Integer id,
+                       Model model){
+        Question question = questionMapper.selectByPrimaryKey(id);
+        model.addAttribute("title", question.getTitle());
+        model.addAttribute("description", question.getDescription());
+        model.addAttribute("tag", question.getTag());
+        model.addAttribute("id", question.getId());
+        return "publish";
+    }
+
     @GetMapping("/publish")
     public String publish(){
         return "publish";
@@ -35,6 +53,7 @@ public class PublishController {
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "description", required = false) String description,
             @RequestParam(value = "tag", required = false) String tag,
+            @RequestParam(value = "id", required = false) Integer id,
             HttpServletRequest request,
             Model model
     ){
@@ -71,7 +90,9 @@ public class PublishController {
         question.setCreator(user.getId());
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreate());
-        System.out.println(questionMapper.create(question));
+        question.setId(id);
+
+        System.out.println(questionMapper.insert(question));
         return "redirect:/";
     }
 

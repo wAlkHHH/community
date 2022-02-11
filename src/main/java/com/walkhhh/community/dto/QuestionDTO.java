@@ -1,5 +1,6 @@
 package com.walkhhh.community.dto;
 
+import com.walkhhh.community.model.User;
 import lombok.Data;
 
 /**

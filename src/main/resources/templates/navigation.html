@@ -28,7 +28,7 @@
 
           <ul class="nav justify-content-end" th:if="${session.user != null}">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/publish">发布</a>
+              <a class="nav-link active" aria-current="page" href="/publish">提问</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="#">通知</a>
@@ -42,8 +42,8 @@
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 
               <li><a class="dropdown-item" href="#">消息中心</a></li>
-              <li><a class="dropdown-item" href="#">个人资料</a></li>
-              <li><a class="dropdown-item" href="#">退出登录</a></li>
+              <li><a class="dropdown-item" href="/profile/questions">个人资料</a></li>
+              <li><a class="dropdown-item" href="/logout">退出登录</a></li>
             </ul>
           </li>
 

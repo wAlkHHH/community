@@ -2,9 +2,10 @@ package com.walkhhh.community.controller;
 
 import com.walkhhh.community.dto.AccessTokenDTO;
 import com.walkhhh.community.dto.GithubUser;
-import com.walkhhh.community.dto.User;
+import com.walkhhh.community.model.User;
 import com.walkhhh.community.mapper.UserMapper;
 import com.walkhhh.community.provider.GithubProvider;
+import com.walkhhh.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,9 @@ import java.util.UUID;
 public class AuthorizeController {
     @Autowired
     private GithubProvider githubProvider;
+
+    @Autowired
+    private UserService userService;
 
     @Value("${github.client.id}")
     private String clientId;
@@ -61,15 +65,23 @@ public class AuthorizeController {
                 user.setToken(token);
                 user.setName(githubUser.getName());
                 user.setAccountId(String.valueOf(githubUser.getId()));
-                user.setGmtCreate(System.currentTimeMillis());
-                user.setGmtModified(githubUser.getGmtCreate());
-                userMapper.insert(user);
+                userService.createOrUpdate(user);
                 //登陆成功，写cookie和session
 //            request.getSession().setAttribute("user", githubUser);
                 response.addCookie(new Cookie("token", token));
             }
         }
 
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response){
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
         return "redirect:/";
     }
 }
