@@ -61,10 +61,7 @@ public class QuestionService {
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, rowBounds);
 
         for (Question question : questions) {
-            UserExample userExample = new UserExample();
-            userExample.createCriteria().andAccountIdEqualTo(question.getCreator().toString());
-            List<User> users = userMapper.selectByExample(userExample);
-            User user = users.get(0);
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
@@ -103,10 +100,7 @@ public class QuestionService {
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, rowBounds);
 
         for (Question question : questions) {
-            UserExample userExample = new UserExample();
-            userExample.createCriteria().andAccountIdEqualTo(question.getCreator().toString());
-            List<User> users = userMapper.selectByExample(userExample);
-            User user = users.get(0);
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
